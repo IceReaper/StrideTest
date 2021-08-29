@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Stride.Engine" Version="4.1.0.1459-beta" />
+        <PackageReference Include="Stride.Navigation" Version="4.1.0.1459-beta" />
+        <PackageReference Include="Stride.Particles" Version="4.1.0.1459-beta" />
+        <PackageReference Include="Stride.Physics" Version="4.1.0.1459-beta" />
+        <PackageReference Include="Stride.UI" Version="4.1.0.1459-beta" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Assets/**/*" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+</Project>
