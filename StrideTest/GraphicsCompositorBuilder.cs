@@ -36,7 +36,7 @@ namespace StrideTest
 
 			var cameraSlot = new SceneCameraSlot { Name = "Main" };
 
-			return new GraphicsCompositor
+			return new()
 			{
 				Cameras = { cameraSlot },
 				RenderStages =
@@ -72,10 +72,7 @@ namespace StrideTest
 								{
 									Renderers =
 									{
-										new LightDirectionalShadowMapRenderer
-										{
-											ShadowCasterRenderStage = shadowCasterRenderStage
-										},
+										new LightDirectionalShadowMapRenderer { ShadowCasterRenderStage = shadowCasterRenderStage },
 										new LightSpotShadowMapRenderer { ShadowCasterRenderStage = shadowCasterRenderStage },
 										new LightPointShadowMapRendererParaboloid
 										{

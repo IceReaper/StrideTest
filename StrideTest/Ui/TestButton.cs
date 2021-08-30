@@ -1,4 +1,4 @@
-namespace StrideTest
+namespace StrideTest.Ui
 {
 	using Stride.Core.Mathematics;
 	using Stride.Graphics;
@@ -7,7 +7,7 @@ namespace StrideTest
 
 	public class TestButton : Button
 	{
-		public TestButton(SpriteFont font)
+		public TestButton(SpriteFont? font)
 		{
 			this.Width = 200;
 			this.Height = 50;

@@ -1,0 +1,6 @@
+Transform:
+PointLight:
+  Color: 1.0 0.0 0.0 1.0
+  Radius: 100
+Ui:
+RotateAroundScene:
