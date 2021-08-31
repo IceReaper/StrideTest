@@ -23,6 +23,7 @@ namespace StrideTest.Resources
 		public static Font Load(FontSystem fontSystem, string path, Stream stream)
 		{
 			const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance;
+
 			var fontManager = fontSystem.GetType().GetProperty("FontManager", flags)?.GetValue(fontSystem);
 
 			if (fontManager?.GetType().GetField("cachedFontFaces", flags)?.GetValue(fontManager) is not Dictionary<string, Face> cachedFontFaces

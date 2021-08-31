@@ -1,5 +1,6 @@
 namespace StrideTest.Resources
 {
+	using Ecs;
 	using Stride.Engine;
 	using Stride.Graphics;
 	using Stride.Graphics.Font;
@@ -11,6 +12,9 @@ namespace StrideTest.Resources
 	{
 		private readonly Game game;
 		public GraphicsDevice GraphicsDevice => this.game.GraphicsDevice;
+		public readonly ActorLibrary ActorLibrary;
+		public readonly MaterialLibrary MaterialLibrary;
+		
 		private readonly Dictionary<string, object> assets = new();
 		private readonly Dictionary<string, List<object>> pathHolders = new();
 		private readonly Dictionary<object, List<string>> holderPaths = new();
@@ -18,6 +22,14 @@ namespace StrideTest.Resources
 		public AssetManager(Game game)
 		{
 			this.game = game;
+
+			var materialLibraryBuilder = new MaterialLibraryBuilder();
+			materialLibraryBuilder.Add("Assets/Materials");
+			this.MaterialLibrary = materialLibraryBuilder.Build();
+			
+			var actorLibraryBuilder = new ActorLibraryBuilder();
+			actorLibraryBuilder.Add("Assets/Actors");
+			this.ActorLibrary = actorLibraryBuilder.Build();
 		}
 
 		public T? Load<T>(string path, object holder)
@@ -68,15 +80,35 @@ namespace StrideTest.Resources
 			this.holderPaths.Remove(holder);
 		}
 
+		private static string GetPath<T>(string path)
+		{
+			if (typeof(T) == typeof(Texture))
+				path = $"Textures/{path}.png";
+			else if (typeof(T) == typeof(Font))
+				path = $"Fonts/{path}.ttf";
+			else
+				throw new NotSupportedException();
+
+			return Path.Combine("Assets", path);
+		}
+
 		private object? Load<T>(string path)
 		{
 			if (typeof(T) == typeof(Texture))
-				return Texture.Load(this.game.GraphicsDevice, File.OpenRead($"Assets/{path}.png"));
+				return Texture.Load(this.game.GraphicsDevice, File.OpenRead(AssetManager.GetPath<T>(path)));
 
 			if (typeof(T) == typeof(Font))
-				return Font.Load((FontSystem)this.game.Font, path, File.OpenRead($"Assets/{path}.ttf"));
+				return Font.Load((FontSystem)this.game.Font, path, File.OpenRead(AssetManager.GetPath<T>(path)));
+
+			if (typeof(T) == typeof(PbrMaterial))
+				return PbrMaterial.Load(this, this.MaterialLibrary.Get(path));
 
 			throw new NotSupportedException();
+		}
+
+		public static bool Exists<T>(string path)
+		{
+			return File.Exists(AssetManager.GetPath<T>(path));
 		}
 	}
 }

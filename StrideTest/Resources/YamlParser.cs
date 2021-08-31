@@ -6,9 +6,9 @@
 
 	public static class YamlParser
 	{
-		public static YamlNode Read(string text)
+		public static Dictionary<string, YamlNode> Read(string text)
 		{
-			return YamlParser.Read(text.Replace("\r", "").Split("\n").ToList(), 0, new());
+			return YamlParser.Read(text.Replace("\r", "").Split("\n").ToList(), 0, new()).Nodes;
 		}
 
 		private static YamlNode Read(IList<string> lines, int currentIndentation, YamlNode currentNode)

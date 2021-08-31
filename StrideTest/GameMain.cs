@@ -26,13 +26,12 @@
 			this.SceneSystem.GraphicsCompositor = GraphicsCompositorBuilder.Create();
 			this.SceneSystem.SceneInstance = new(this.Services, new());
 
+			// TODO implement VFS for asset manager.
 			var assetManager = new AssetManager(this);
-			var entityLibraryBuilder = new ActorLibraryBuilder();
-			entityLibraryBuilder.Add("Assets/Actors");
 
-			this.world = new(assetManager, entityLibraryBuilder.Build(), this.SceneSystem.SceneInstance.RootScene);
+			this.world = new(assetManager, assetManager.ActorLibrary, this.SceneSystem.SceneInstance.RootScene);
 
-			var cameraEntity = this.world.Spawn("Camera");
+			var cameraEntity = this.world.Spawn("camera_default");
 			cameraEntity.GetComponent<Camera>()?.Activate(this.SceneSystem);
 			var cameraTransform = cameraEntity.GetComponent<Transform>();
 
@@ -47,17 +46,17 @@
 				);
 			}
 
-			this.world.Spawn("Ground");
-			this.world.Spawn("Environment");
-			this.world.Spawn("Test");
+			this.world.Spawn("test_ground");
+			this.world.Spawn("environment_default");
+			this.world.Spawn("test_playground");
 
-			var teapotEntity = this.world.Spawn("Teapot");
+			var teapotEntity = this.world.Spawn("test_teapot");
 			var teapotTransform = teapotEntity.GetComponent<Transform>();
 
 			if (teapotTransform != null)
 				teapotTransform.Position = new(0, 1, 0);
 
-			var particlesEntity = this.world.Spawn("Particles");
+			var particlesEntity = this.world.Spawn("test_particles");
 			var particlesTransform = particlesEntity.GetComponent<Transform>();
 
 			if (particlesTransform != null)

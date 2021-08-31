@@ -30,7 +30,7 @@ namespace StrideTest.Ecs.Components
 				return;
 
 			this.tick++;
-			this.transform.Position = (Matrix.Translation(0, 3, 3) * Matrix.RotationY(MathUtil.DegreesToRadians(this.tick))).TranslationVector;
+			this.transform.Position = (Matrix.Translation(0, 1, 1) * Matrix.RotationY(MathUtil.DegreesToRadians(this.tick))).TranslationVector;
 		}
 	}
 }

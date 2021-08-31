@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
+        <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" PrivateAssets="all" />
         <PackageReference Include="Stride.Core.Mathematics" Version="4.1.0.1459-beta" />
         <PackageReference Include="Stride.Engine" Version="4.1.0.1459-beta" />
         <PackageReference Include="Stride.Navigation" Version="4.1.0.1459-beta" />

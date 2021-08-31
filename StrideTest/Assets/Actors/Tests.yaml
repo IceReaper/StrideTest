@@ -1,0 +1,20 @@
+test_playground:
+  Transform:
+  PointLight:
+    Color: 1.0 0.0 0.0 1.0
+    Radius: 100
+  Ui:
+  RotateAroundScene:
+
+test_ground:
+  Ground:
+    Material: WoodFloor046
+
+test_teapot:
+  Transform:
+  TeapotModel:
+    Material: MetalPlates001
+
+test_particles:
+  Transform:
+  Particles:
