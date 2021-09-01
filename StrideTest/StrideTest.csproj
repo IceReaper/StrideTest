@@ -6,6 +6,8 @@
 
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" PrivateAssets="all" />
+        <PackageReference Include="SharpGLTF.Core" Version="1.0.0-alpha0023" />
+        <PackageReference Include="SharpGLTF.Toolkit" Version="1.0.0-alpha0023" />
         <PackageReference Include="Stride.Core.Mathematics" Version="4.1.0.1459-beta" />
         <PackageReference Include="Stride.Engine" Version="4.1.0.1459-beta" />
         <PackageReference Include="Stride.Navigation" Version="4.1.0.1459-beta" />
@@ -15,6 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Assets/**/*" CopyToOutputDirectory="PreserveNewest" />
+        <None Update="Base/**/*" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 </Project>

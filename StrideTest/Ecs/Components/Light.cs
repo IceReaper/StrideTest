@@ -4,6 +4,7 @@ namespace StrideTest.Ecs.Components
 	using Stride.Core.Mathematics;
 	using Stride.Engine;
 	using Stride.Rendering.Lights;
+	using Entity = Ecs.Entity;
 
 	public abstract class LightInfo : MultipleComponentInfo<Light>
 	{
@@ -13,17 +14,17 @@ namespace StrideTest.Ecs.Components
 
 	public abstract class Light : MultipleComponent<LightInfo>, IOnSpawn
 	{
-		protected readonly Entity LightEntity;
+		protected readonly Entity StrideLightEntity;
 
-		protected Light(Actor actor, LightInfo info)
-			: base(actor, info)
+		protected Light(Entity entity, LightInfo info)
+			: base(entity, info)
 		{
-			actor.Entity.AddChild(this.LightEntity = new());
+			entity.StrideEntity.AddChild(this.StrideLightEntity = new());
 		}
 
 		void IOnSpawn.OnSpawn()
 		{
-			this.LightEntity.Add(new LightComponent { Type = this.CreateLight(), Intensity = this.Info.Intensity });
+			this.StrideLightEntity.Add(new LightComponent { Type = this.CreateLight(), Intensity = this.Info.Intensity });
 		}
 
 		protected abstract ILight CreateLight();

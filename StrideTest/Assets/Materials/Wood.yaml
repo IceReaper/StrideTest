@@ -1,6 +1,0 @@
-WoodFloor046:
-  DiffuseMap: WoodFloor046/Diffuse
-  DisplacementMap: WoodFloor046/Displacement
-  DisplacementIntensity: 1
-  GlossinessMap: WoodFloor046/Glossiness
-  NormalMap: WoodFloor046/Normal

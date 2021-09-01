@@ -1,0 +1,6 @@
+Test:
+  DiffuseMap: Test/Diffuse
+  MetalnessMap: Test/Metalness
+  RoughnessMap: Test/Roughness
+  AmbientOcclusionMap: Test/AmbientOcclusion
+  Emissive: Test/Emissive

@@ -17,10 +17,10 @@ namespace StrideTest.Ecs.Components
 
 	public class Particles : MultipleComponent<ParticlesInfo>
 	{
-		public Particles(Actor actor, ParticlesInfo info)
-			: base(actor, info)
+		public Particles(Entity entity, ParticlesInfo info)
+			: base(entity, info)
 		{
-			actor.Entity.Components.Add(
+			entity.StrideEntity.Components.Add(
 				new ParticleSystemComponent
 				{
 					ParticleSystem =

@@ -5,16 +5,16 @@ namespace StrideTest.Ecs.Components
 
 	public class AmbientLightInfo : LightInfo
 	{
-		protected override Light Create(Actor actor)
+		protected override Light Create(Entity entity)
 		{
-			return new AmbientLight(actor, this);
+			return new AmbientLight(entity, this);
 		}
 	}
 
 	public class AmbientLight : Light
 	{
-		public AmbientLight(Actor actor, AmbientLightInfo info)
-			: base(actor, info)
+		public AmbientLight(Entity entity, AmbientLightInfo info)
+			: base(entity, info)
 		{
 		}
 

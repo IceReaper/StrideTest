@@ -7,9 +7,9 @@ namespace StrideTest.Ecs.Components
 	{
 		public readonly float Radius;
 
-		protected override Light Create(Actor actor)
+		protected override Light Create(Entity entity)
 		{
-			return new PointLight(actor, this);
+			return new PointLight(entity, this);
 		}
 	}
 
@@ -17,8 +17,8 @@ namespace StrideTest.Ecs.Components
 	{
 		public new readonly PointLightInfo Info;
 
-		public PointLight(Actor actor, PointLightInfo info)
-			: base(actor, info)
+		public PointLight(Entity entity, PointLightInfo info)
+			: base(entity, info)
 		{
 			this.Info = info;
 		}

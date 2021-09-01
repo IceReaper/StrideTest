@@ -1,12 +1,13 @@
 namespace StrideTest.Ecs.Components
 {
 	using Events;
-	using Resources;
 	using Stride.Core.Mathematics;
 	using Stride.Engine;
 	using Stride.Graphics;
 	using Stride.Rendering;
 	using System.Linq;
+	using Entity = Ecs.Entity;
+	using Material = Assets.Materials.Material;
 
 	public class GroundInfo : SingleComponentInfo<Ground>
 	{
@@ -15,8 +16,8 @@ namespace StrideTest.Ecs.Components
 
 	public class Ground : SingleComponent<GroundInfo>, IOnDespawn
 	{
-		public Ground(Actor actor, GroundInfo info)
-			: base(actor, info)
+		public Ground(Entity entity, GroundInfo info)
+			: base(entity, info)
 		{
 			// TODO move this to gltf.
 			// TODO what do we need to dispose?
@@ -40,7 +41,7 @@ namespace StrideTest.Ecs.Components
 				VertexHelper.GenerateTangentBinormal(VertexPositionNormalTexture.Layout, vertices, indices)
 			);
 
-			actor.Entity.Add(
+			entity.StrideEntity.Add(
 				new ModelComponent(
 					new()
 					{
@@ -52,12 +53,13 @@ namespace StrideTest.Ecs.Components
 							{
 								Draw = new()
 								{
-									IndexBuffer = new(Buffer.Index.New(actor.World.AssetManager.GraphicsDevice, indices), true, indices.Length),
+									IndexBuffer =
+										new(Buffer.Index.New(entity.World.AssetManager.GraphicsDevice, indices), true, indices.Length),
 									VertexBuffers = new[]
 									{
 										new VertexBufferBinding(
 											Buffer.New(
-												actor.World.AssetManager.GraphicsDevice,
+												entity.World.AssetManager.GraphicsDevice,
 												vertexTransformResult.VertexBuffer,
 												BufferFlags.VertexBuffer
 											),
@@ -72,7 +74,7 @@ namespace StrideTest.Ecs.Components
 								BoundingSphere = boundingSphere
 							}
 						},
-						Materials = { new(actor.World.AssetManager.Load<PbrMaterial>(info.Material, this)) }
+						Materials = { new(entity.World.AssetManager.Load<Material>(info.Material, this)) }
 					}
 				)
 			);
@@ -80,7 +82,7 @@ namespace StrideTest.Ecs.Components
 
 		void IOnDespawn.OnDespawn()
 		{
-			this.Actor.World.AssetManager.Dispose(this);
+			this.Entity.World.AssetManager.Dispose(this);
 		}
 	}
 }

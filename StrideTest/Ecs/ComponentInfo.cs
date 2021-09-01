@@ -6,7 +6,7 @@ namespace StrideTest.Ecs
 	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers | ImplicitUseTargetFlags.WithInheritors)]
 	public interface IComponentInfo
 	{
-		public IComponent Create(Actor actor);
+		public IComponent Create(Entity entity);
 	}
 
 	public interface ISingleComponentInfo : IComponentInfo
@@ -20,14 +20,14 @@ namespace StrideTest.Ecs
 	public abstract class ComponentInfo<TComponent> : IComponentInfo
 		where TComponent : IComponent
 	{
-		IComponent IComponentInfo.Create(Actor actor)
+		IComponent IComponentInfo.Create(Entity entity)
 		{
-			return this.Create(actor);
+			return this.Create(entity);
 		}
 
-		protected virtual TComponent Create(Actor actor)
+		protected virtual TComponent Create(Entity entity)
 		{
-			return (TComponent)Activator.CreateInstance(typeof(TComponent), actor, this)!;
+			return (TComponent)Activator.CreateInstance(typeof(TComponent), entity, this)!;
 		}
 	}
 

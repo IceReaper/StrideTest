@@ -4,6 +4,7 @@ namespace StrideTest.Ecs.Components
 	using Stride.Core.Mathematics;
 	using Stride.Engine;
 	using System.IO;
+	using Entity = Ecs.Entity;
 
 	public class TransformInfo : SingleComponentInfo<Transform>
 	{
@@ -31,10 +32,10 @@ namespace StrideTest.Ecs.Components
 
 		private readonly TransformComponent strideTransform;
 
-		public Transform(Actor actor, TransformInfo info)
-			: base(actor, info)
+		public Transform(Entity entity, TransformInfo info)
+			: base(entity, info)
 		{
-			this.strideTransform = actor.Entity.Transform;
+			this.strideTransform = entity.StrideEntity.Transform;
 		}
 
 		public override void Load(BinaryReader reader)

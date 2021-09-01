@@ -1,7 +1,7 @@
 namespace StrideTest.Ecs
 {
+	using Assets;
 	using Events;
-	using Resources;
 	using Stride.Engine;
 	using System.Collections.Generic;
 	using System.IO;
@@ -10,71 +10,71 @@ namespace StrideTest.Ecs
 	public sealed class World
 	{
 		public readonly AssetManager AssetManager;
-		public readonly ActorLibrary ActorLibrary;
+		public readonly EntityLibrary EntityLibrary;
 		private readonly Scene strideScene;
 
-		private readonly Dictionary<uint, Actor> actors = new();
-		private uint nextActorId;
+		private readonly Dictionary<uint, Entity> entities = new();
+		private uint nextEntityId;
 
-		public IEnumerable<Actor> Actors => this.actors.Values;
+		public IEnumerable<Entity> Entities => this.entities.Values;
 
-		public World(AssetManager assetManager, ActorLibrary actorLibrary, Scene strideScene)
+		public World(AssetManager assetManager, EntityLibrary entityLibrary, Scene strideScene)
 		{
 			this.AssetManager = assetManager;
-			this.ActorLibrary = actorLibrary;
+			this.EntityLibrary = entityLibrary;
 			this.strideScene = strideScene;
 		}
 
-		public Actor Spawn(string type)
+		public Entity Spawn(string type)
 		{
-			var actor = new Actor(this.nextActorId++, this.ActorLibrary.ById(type), this);
-			this.actors.Add(actor.Id, actor);
-			this.strideScene.Entities.Add(actor.Entity);
+			var entity = new Entity(this.nextEntityId++, this.EntityLibrary.ById(type), this);
+			this.entities.Add(entity.Id, entity);
+			this.strideScene.Entities.Add(entity.StrideEntity);
 
-			foreach (var component in actor.GetComponents<IOnSpawn>())
+			foreach (var component in entity.GetComponents<IOnSpawn>())
 				component.OnSpawn();
 
-			return actor;
+			return entity;
 		}
 
-		public void Despawn(Actor actor)
+		public void Despawn(Entity entity)
 		{
-			foreach (var component in actor.GetComponents<IOnDespawn>())
+			foreach (var component in entity.GetComponents<IOnDespawn>())
 				component.OnDespawn();
 
-			this.strideScene.Entities.Remove(actor.Entity);
-			this.actors.Remove(actor.Id);
+			this.strideScene.Entities.Remove(entity.StrideEntity);
+			this.entities.Remove(entity.Id);
 		}
 
 		public void Update()
 		{
-			foreach (var actor in this.actors.Values.ToArray())
-				actor.Update();
+			foreach (var entity in this.entities.Values.ToArray())
+				entity.Update();
 		}
 
 		public void Load(BinaryReader reader)
 		{
-			this.actors.Clear();
+			this.entities.Clear();
 
-			this.nextActorId = reader.ReadUInt32();
-			var numActors = reader.ReadUInt32();
+			this.nextEntityId = reader.ReadUInt32();
+			var numEntities = reader.ReadUInt32();
 
-			for (var i = 0; i < numActors; i++)
+			for (var i = 0; i < numEntities; i++)
 			{
-				var actor = new Actor(reader, this.ActorLibrary.ById(reader.ReadString()), this);
-				this.actors.Add(actor.Id, actor);
+				var entity = new Entity(reader, this.EntityLibrary.ById(reader.ReadString()), this);
+				this.entities.Add(entity.Id, entity);
 			}
 		}
 
 		public void Save(BinaryWriter writer)
 		{
-			writer.Write(this.nextActorId);
-			writer.Write(this.actors.Count);
+			writer.Write(this.nextEntityId);
+			writer.Write(this.entities.Count);
 
-			foreach (var (id, actor) in this.actors)
+			foreach (var (id, entity) in this.entities)
 			{
 				writer.Write(id);
-				actor.Save(writer);
+				entity.Save(writer);
 			}
 		}
 	}

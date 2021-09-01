@@ -2,6 +2,7 @@ namespace StrideTest.Ecs.Components
 {
 	using Events;
 	using Stride.Core.Mathematics;
+	using System.IO;
 
 	public class RotateAroundSceneInfo : SingleComponentInfo<RotateAroundScene>
 	{
@@ -14,14 +15,14 @@ namespace StrideTest.Ecs.Components
 		private Transform? transform;
 		private long tick;
 
-		public RotateAroundScene(Actor actor, RotateAroundSceneInfo info)
-			: base(actor, info)
+		public RotateAroundScene(Entity entity, RotateAroundSceneInfo info)
+			: base(entity, info)
 		{
 		}
 
 		void IOnSpawn.OnSpawn()
 		{
-			this.transform = this.Actor.GetComponent<Transform>();
+			this.transform = this.Entity.GetComponent<Transform>();
 		}
 
 		void IOnUpdate.OnUpdate()
@@ -31,6 +32,16 @@ namespace StrideTest.Ecs.Components
 
 			this.tick++;
 			this.transform.Position = (Matrix.Translation(0, 1, 1) * Matrix.RotationY(MathUtil.DegreesToRadians(this.tick))).TranslationVector;
+		}
+
+		public override void Load(BinaryReader reader)
+		{
+			this.tick = reader.ReadInt64();
+		}
+
+		public override void Save(BinaryWriter writer)
+		{
+			writer.Write(this.tick);
 		}
 	}
 }

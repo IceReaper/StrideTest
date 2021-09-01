@@ -8,18 +8,18 @@ namespace StrideTest.Ecs.Components
 	{
 		public readonly Quaternion Rotation = Quaternion.Identity;
 
-		protected override Light Create(Actor actor)
+		protected override Light Create(Entity entity)
 		{
-			return new DirectionalLight(actor, this);
+			return new DirectionalLight(entity, this);
 		}
 	}
 
 	public class DirectionalLight : Light
 	{
-		public DirectionalLight(Actor actor, DirectionalLightInfo info)
-			: base(actor, info)
+		public DirectionalLight(Entity entity, DirectionalLightInfo info)
+			: base(entity, info)
 		{
-			this.LightEntity.Transform.Rotation = info.Rotation;
+			this.StrideLightEntity.Transform.Rotation = info.Rotation;
 		}
 
 		protected override ILight CreateLight()

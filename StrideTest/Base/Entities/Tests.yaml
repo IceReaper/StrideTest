@@ -1,0 +1,21 @@
+TestPlayground:
+  Transform:
+  PointLight:
+    Color: 1.0 0.0 0.0 1.0
+    Radius: 100
+  Ui:
+  RotateAroundScene:
+
+TestGround:
+  Ground:
+    Material: WoodFloor046
+
+TestModel:
+  Transform:
+  GltfModel:
+    Model: Test
+    Material: Test
+
+TestParticles:
+  Transform:
+  Particles:

@@ -1,0 +1,7 @@
+MetalPlates001:
+  DiffuseMap: MetalPlates001/Diffuse
+  DisplacementMap: MetalPlates001/Displacement
+  DisplacementIntensity: 0.01
+  GlossinessMap: MetalPlates001/Glossiness
+  MetalnessMap: MetalPlates001/Metalness
+  NormalMap: MetalPlates001/Normal

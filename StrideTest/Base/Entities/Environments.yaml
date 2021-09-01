@@ -1,0 +1,6 @@
+EnvironmentDefault:
+  AmbientLight:
+    Intensity: 0.5
+  DirectionalLight:
+    Intensity: 0.5
+    Rotation: 45 -45 0

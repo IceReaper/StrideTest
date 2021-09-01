@@ -1,4 +1,0 @@
-camera_default:
-  Transform:
-  Camera:
-    ProjectionMode: Orthographic
