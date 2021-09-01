@@ -14,7 +14,7 @@ namespace StrideTest.Ecs.Components
 
 	public abstract class Light : MultipleComponent<LightInfo>, IOnSpawn
 	{
-		protected readonly Entity StrideLightEntity;
+		protected readonly Stride.Engine.Entity StrideLightEntity;
 
 		protected Light(Entity entity, LightInfo info)
 			: base(entity, info)
