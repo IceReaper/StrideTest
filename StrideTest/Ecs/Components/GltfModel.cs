@@ -1,5 +1,6 @@
 ﻿namespace StrideTest.Ecs.Components
 {
+	using Assets.Models;
 	using Events;
 	using SharpGLTF.Geometry;
 	using SharpGLTF.Schema2;
@@ -27,14 +28,27 @@
 		public GltfModel(Entity entity, GltfModelInfo info)
 			: base(entity, info)
 		{
-			// TODO material from gltf ... ?
-			// TODO animations
-			// TODO bones
+			// TODO we need the code to be able to determine the absolute bone transform in every frame
 			// TODO what do we need to dispose?
 
-			var modelRoot = ModelRoot.ReadGLB(File.OpenRead("Assets/Models/" + info.Model + ".glb"));
+			var modelRoot = ModelRoot.ReadGLB(File.OpenRead("Base/Models/" + info.Model + ".glb"));
 
-			var verticesList = new List<VertexPositionNormalTexture>();
+			// New approach - does not render the model.
+			var model = GltfMeshParser.LoadFirstModel(modelRoot);
+			model.Materials.Add(new(entity.World.AssetManager.Load<Material>(info.Material, this)));
+			var animations = GltfMeshParser.ConvertAnimations(modelRoot, info.Model);
+			
+			var animationComponent = new AnimationComponent();
+			this.Entity.StrideEntity.Add(new ModelComponent(model));
+			this.Entity.StrideEntity.Add(animationComponent);
+			
+			foreach (var (name, animation) in animations)
+				animationComponent.Animations.Add(name, animation);
+
+			animationComponent.Play(animations.Keys.First());
+
+			// Old approach - does not support animations.
+			/*var verticesList = new List<VertexPositionNormalTexture>();
 
 			var addVertex = new Action<IVertexBuilder>(
 				vertex =>
@@ -103,7 +117,7 @@
 						Materials = { new(entity.World.AssetManager.Load<Material>(info.Material, this)) }
 					}
 				)
-			);
+			);*/
 		}
 
 		void IOnDespawn.OnDespawn()
