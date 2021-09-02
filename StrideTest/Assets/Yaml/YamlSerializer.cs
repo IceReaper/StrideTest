@@ -36,18 +36,6 @@ namespace StrideTest.Assets.Yaml
 					continue;
 				}
 
-				if (field.FieldType.IsClass)
-				{
-					var existingValue = field.GetValue(context);
-
-					if (existingValue != null)
-					{
-						YamlSerializer.Deserialize(existingValue, value);
-
-						continue;
-					}
-				}
-
 				if (YamlSerializer.TryDeserializeComplex(field.FieldType, value, out var fieldValue))
 					field.SetValue(context, fieldValue);
 			}
@@ -55,41 +43,17 @@ namespace StrideTest.Assets.Yaml
 
 		private static bool TryDeserializeComplex(Type type, YamlNode value, out object? result)
 		{
-			var valueChunks = value.Value == null ? Array.Empty<string>() : YamlSerializer.SplitValue(value.Value);
+			var useType = Nullable.GetUnderlyingType(type) ?? type;
 
-			if (valueChunks.Length == 0)
+			if (useType.IsAssignableTo(typeof(IDictionary)))
 			{
-				result = null;
+				var arguments = useType.GetGenericArguments();
 
-				if (Nullable.GetUnderlyingType(type) != null)
-					return true;
-
-				Console.WriteLine($"Unable to parse 'null' into type '{type.Name}'");
-
-				return false;
-			}
-
-			if (type.IsArray)
-			{
-				var results = new List<object>();
-
-				foreach (var valueChunk in valueChunks)
+				if (Activator.CreateInstance(useType) is not IDictionary dictionary)
 				{
-					if (YamlSerializer.TryDeserializeSimple(type.GetElementType()!, valueChunk, out var arrayValueParsed) && arrayValueParsed != null)
-						results.Add(arrayValueParsed);
-				}
-
-				result = results.ToArray();
-
-				return true;
-			}
-
-			if (type.IsAssignableTo(typeof(IDictionary)))
-			{
-				var arguments = type.GetGenericArguments();
-
-				if (Activator.CreateInstance(type) is not IDictionary dictionary)
 					Console.WriteLine($"Unable to build dictionary for key type {arguments[0].Name} and value type {arguments[1].Name}");
+					result = null;
+				}
 				else
 				{
 					foreach (var (keyString, valueYaml) in value)
@@ -101,32 +65,60 @@ namespace StrideTest.Assets.Yaml
 						else
 							Console.WriteLine($"Unable to add entry {keyString} to dictionary");
 					}
+
+					result = dictionary;
 				}
+				
+				return result != null;
 			}
 
-			if (!type.IsClass)
+			var valueChunks = value.Value == null ? new[] { "" } : YamlSerializer.SplitValue(value.Value);
+
+			if (YamlSerializer.TryDeserializeSimple(useType, valueChunks[0], out result, true))
 			{
 				if (valueChunks.Length > 1)
-					Console.WriteLine($"Ignoring primitive values '2-{valueChunks.Length}' for type {type.Name}");
+					Console.WriteLine($"Ignoring primitive values '2-{valueChunks.Length}' for type {useType.Name}");
 
-				return YamlSerializer.TryDeserializeSimple(type, valueChunks[0], out result);
+				return true;
 			}
 
-			result = Activator.CreateInstance(type);
-
-			if (result == null)
+			if (useType.IsArray)
 			{
-				Console.WriteLine($"Unable to create new instance of type '{type.Name}'");
+				var results = new List<object>();
 
-				return false;
+				foreach (var valueChunk in valueChunks)
+				{
+					if (YamlSerializer.TryDeserializeSimple(useType.GetElementType()!, valueChunk, out var arrayValueParsed) && arrayValueParsed != null)
+						results.Add(arrayValueParsed);
+				}
+
+				result = results.ToArray();
+
+				return true;
 			}
 
-			YamlSerializer.Deserialize(result, value);
+			if (useType.IsClass)
+			{
+				result = Activator.CreateInstance(useType);
 
-			return true;
+				if (result == null)
+				{
+					Console.WriteLine($"Unable to create new instance of type '{useType.Name}'");
+
+					return false;
+				}
+
+				YamlSerializer.Deserialize(result, value);
+
+				return true;
+			}
+
+			Console.WriteLine($"Unable to parse type '{useType.Name}'");
+
+			return false;
 		}
 
-		private static bool TryDeserializeSimple(Type type, string value, out object? result)
+		private static bool TryDeserializeSimple(Type type, string value, out object? result, bool silent = false)
 		{
 			result = null;
 
@@ -167,7 +159,7 @@ namespace StrideTest.Assets.Yaml
 			else if (type == typeof(Color) && YamlSerializer.TryParseColor(value, out var colorResult))
 				result = colorResult;
 
-			if (result == null)
+			if (result == null && !silent)
 				Console.WriteLine($"Unable to parse '{value}' into type '{type.Name}'");
 
 			return result != null;
@@ -251,26 +243,16 @@ namespace StrideTest.Assets.Yaml
 		private static string[] SplitValue(string value)
 		{
 			var chunks = new List<string>();
-			var remaining = value;
+			var chunkStart = 0;
 
-			for (var i = 0; i < remaining.Length;)
+			for (var i = 0; i < value.Length; i++)
 			{
-				if (remaining[i] == '"' || remaining[i] == '\'')
-					i = remaining.IndexOf(remaining[i], 1);
-				else if (remaining[i] == ',')
-				{
-					chunks.Add(remaining[..i].Trim());
-					remaining = remaining[(i + 1)..].Trim();
-
-					break;
-				}
-				else if (i == remaining.Length)
-				{
-					chunks.Add(remaining);
-					remaining = "";
-				}
-				else
-					i++;
+				if (value[i] == ',')
+					chunks.Add(value.Substring(chunkStart, i - chunkStart).Trim());
+				else if (i + 1 == value.Length)
+					chunks.Add(value[chunkStart..].Trim());
+				else if (value[i] == '"' || value[i] == '\'')
+					i = value.IndexOf(value[i], i + 1);
 			}
 
 			return chunks.ToArray();

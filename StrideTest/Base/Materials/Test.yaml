@@ -3,4 +3,4 @@ Test:
   MetalnessMap: Test/Metalness
   RoughnessMap: Test/Roughness
   AmbientOcclusionMap: Test/AmbientOcclusion
-  Emissive: Test/Emissive
+  EmissiveMap: Test/Emissive

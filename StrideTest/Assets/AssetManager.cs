@@ -65,10 +65,10 @@ namespace StrideTest.Assets
 		private object? Load<T>(string path)
 		{
 			if (typeof(T) == typeof(Texture))
-				return Texture.Load(this.game.GraphicsDevice, File.OpenRead(Path.Combine(this.assetRoot, "Textures", path)));
+				return Texture.Load(this.game.GraphicsDevice, File.OpenRead(Path.Combine(this.assetRoot, "Textures", $"{path}.png")));
 
 			if (typeof(T) == typeof(Font))
-				return Font.Load((FontSystem)this.game.Font, path, File.OpenRead(Path.Combine(this.assetRoot, "Fonts/", path)));
+				return Font.Load((FontSystem)this.game.Font, path, File.OpenRead(Path.Combine(this.assetRoot, "Fonts/", $"{path}.ttf")));
 
 			if (typeof(T) == typeof(Material) && this.MaterialLibrary.TryGetValue(path, out var materialInfo))
 				return Material.Load(this, path, materialInfo);

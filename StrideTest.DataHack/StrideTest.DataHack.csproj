@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <OutputType>exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Stride.Engine" Version="4.1.0.1459-beta" />
+        <PackageReference Include="Stride.Particles" Version="4.1.0.1459-beta" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- TODO Required for engine shaders to resolve -->
+        <PackageReference Include="Stride.Core.Assets.CompilerApp" Version="4.1.0.1459-beta" PrivateAssets="all" />
+    </ItemGroup>
+</Project>

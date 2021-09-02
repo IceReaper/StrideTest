@@ -8,9 +8,4 @@
     <ItemGroup>
         <ProjectReference Include="..\StrideTest\StrideTest.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-        <!-- TODO Required for engine shaders to resolve -->
-        <PackageReference Include="Stride.Core.Assets.CompilerApp" Version="4.1.0.1459-beta" PrivateAssets="all" />
-    </ItemGroup>
 </Project>

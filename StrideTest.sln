@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrideTest", "StrideTest\St
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrideTest.Desktop", "StrideTest.Desktop\StrideTest.Desktop.csproj", "{C0DF1460-08BD-4536-89C7-E6C1B1BAC966}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrideTest.DataHack", "StrideTest.DataHack\StrideTest.DataHack.csproj", "{DAA4EDBD-A7FB-4F19-8951-13252FA5F535}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{C0DF1460-08BD-4536-89C7-E6C1B1BAC966}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0DF1460-08BD-4536-89C7-E6C1B1BAC966}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0DF1460-08BD-4536-89C7-E6C1B1BAC966}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAA4EDBD-A7FB-4F19-8951-13252FA5F535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAA4EDBD-A7FB-4F19-8951-13252FA5F535}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAA4EDBD-A7FB-4F19-8951-13252FA5F535}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAA4EDBD-A7FB-4F19-8951-13252FA5F535}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
